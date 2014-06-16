@@ -2,7 +2,7 @@ CPSC/ECE 3220 - Summer 2014 - Project 3 Assignment
 
 [6/5/14 - added prototypes to the header file]
 
-
+```
   Due date:         Monday, June 16, by midnight
   Grading standard: correctness of program - 100% of grade
   Submission:       use https://handin.cs.clemson.edu/; submit only the
@@ -12,7 +12,7 @@ CPSC/ECE 3220 - Summer 2014 - Project 3 Assignment
   Concepts needed:  memory allocation, boundary tag method
 
   This is to be an individual programming assignment.
-
+```
 You are to write two memory allocation routines to implement a variant
 of Knuth's boundary-tag method. You should write the routines in C using
 the default 64-bit pointers of gcc, and the allocations should be made
@@ -28,7 +28,7 @@ checking; see http://en.wikipedia.org/wiki/Magic_number_(programming).)
 
 
 The following lines will be in "memory_routines.h":
-
+```
   #include <stdio.h>
   #include <string.h>
   #include <stdlib.h>
@@ -50,7 +50,7 @@ The following lines will be in "memory_routines.h":
 
   void *alloc_mem( unsigned );
   unsigned release_mem( void * );
-
+```
 
 The free list is a circular, doubly-linked list with tail and head
 (back and forward) pointers allocated in a free_block structure just
@@ -63,7 +63,7 @@ contiguous blocks.
 Here is the initial state of the memory area. Note that there are 80
 bytes beyond the size of the area that can be allocated because of the
 four tag blocks and free block header.
-
+```
        =============  special ending tag block at start of region
        | tag=1     |    1 byte, this tag is always equal to one
        | signature |   11 bytes = "end_region"
@@ -92,10 +92,10 @@ four tag blocks and free block header.
   hdr->| back_link |    8 bytes, points to self if empty or to last node
        | fwd_link  |    8 bytes, points to self if empty or to first node
        =============
-
+```
 To give some example addresses and block sizes, assume that the data
 structure starts at 0x100 and has 0x300 bytes to allocate.
-
+```
        =============  special ending tag block at start of region
   0x100|       1   |    1 byte, this tag is always equal to one
   0x101|<signature>|   11 bytes = "end_region"
@@ -124,11 +124,11 @@ structure starts at 0x100 and has 0x300 bytes to allocate.
   0x440|   0x120   |    8 bytes, points to self if empty or to last node
   0x448|   0x120   |    8 bytes, points to self if empty or to first node
        =============
-
+```
 When a large enough free block is found, an allocation is made from the
 higher-address end of the free block. Thus, if we allocate 0x60 bytes
 from the 0x300-byte free block above, the data structures will now be:
-
+```
        =============  special ending tag block at start of region
   0x100|       1   |    1 byte, this tag is always equal to one
   0x101|<signature>|   11 bytes = "end_region"
@@ -167,17 +167,17 @@ from the 0x300-byte free block above, the data structures will now be:
   0x440|   0x120   |    8 bytes, points to self if empty or to last node
   0x448|   0x120   |    8 bytes, points to self if empty or to first node
        =============
-
+```
 In the normal case, each allocation uses 32 bytes beyond the requested
 amount since additional tag blocks will be needed. For the example above,
 0x300 - 0x60 - 0x20 = 0x280, or, in decimal,
-
+```
    768   starting free space of 768 bytes (0x300 bytes)
   - 96   minus request of 96 bytes (0x60 bytes)
   - 32   minus extra tag block space of 32 bytes (0x20 bytes)
   ----
    640   equals resulting free space of 640 bytes (0x280 bytes)
-
+```
 When there is not at least 48 bytes left over in a free block after
 an allocation, the whole free block is allocated. In this case, the
 additional tags are not needed since the existing tags can be used.
@@ -289,7 +289,7 @@ periods are debugging messages in my version of alloc_mem() to verify
 the input parameter and the order of searching the free list; you do
 not need to include these print statements in your version of the
 function. Other lines are printed by the test driver.
-
+```
 start memory allocation test, pointer size is 8 bytes
 data structure starts at 0x1ef4010
 header is located at 0x1ef4690
@@ -421,4 +421,4 @@ alloc 12 blocks and release 5 to create 6 free blocks
    free block at 0x1ef4320 of size 0x10
    free block at 0x1ef45a0 of size 0x10
    --------------end of list--------------
-
+```
